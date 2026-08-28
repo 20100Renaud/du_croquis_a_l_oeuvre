@@ -4,7 +4,7 @@ import MobileBook from "./components/MobileBook";
 import ThemeToggle from "./components/ThemeToggle";
 import Footer from "./components/Footer";
 
-function App() {
+export default function App() {
   const [darkMode, setDarkMode] = useState(true);
 
   return (
@@ -20,9 +20,6 @@ function App() {
       </div>
 
       <Footer />
-
     </main>
   );
 }
-
-export default App;

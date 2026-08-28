@@ -206,13 +206,9 @@ export default function MobileBook() {
         </div>
       </div>
 
-      {/* Page counter */}
-      <div className="mt-4 text-sm text-base-content/70">
-        {currentPage + 1}/{pages.length}
-      </div>
-
-      {/* Navigation */}
-      <div className="mt-4 flex w-full max-w-md items-center justify-between">
+      {/* Mobile navigation */}
+      <div className="relative mt-4 flex w-full max-w-md items-center justify-between">
+        {/* Previous */}
         <button
           type="button"
           className="btn btn-circle btn-ghost"
@@ -223,8 +219,14 @@ export default function MobileBook() {
           <span className="text-2xl">‹</span>
         </button>
 
-        <span className="text-sm text-base-content/50">Swipe to turn</span>
+        {/* Counter / Hint */}
+        <span className="absolute left-1/2 -translate-x-1/2 text-sm text-base-content/70">
+          {currentPage === 0
+            ? "Swipe to turn"
+            : `${currentPage + 1}/${pages.length}`}
+        </span>
 
+        {/* Next */}
         <button
           type="button"
           className="btn btn-circle btn-ghost"
