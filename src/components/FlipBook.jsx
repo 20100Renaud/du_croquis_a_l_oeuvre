@@ -5,28 +5,9 @@ import frontPageEdgeShading from "../assets/images/front_page_edge_shading.webp"
 import backPageEdgeShading from "../assets/images/back_page_edge_shading.webp";
 import coverImage from "../assets/images/Logo_Blanc.png";
 
-import page1 from "../assets/images/pages/page1.webp";
-import page2 from "../assets/images/pages/page2.webp";
-import page3 from "../assets/images/pages/page3.webp";
-import page4 from "../assets/images/pages/page4.webp";
-import page5 from "../assets/images/pages/page5.webp";
-import page6 from "../assets/images/pages/page6.webp";
-import page7 from "../assets/images/pages/page7.webp";
-import page8 from "../assets/images/pages/page8.webp";
-import page9 from "../assets/images/pages/page9.webp";
-import page10 from "../assets/images/pages/page10.webp";
+import { sheets } from "../data/pages";
 
 import FlipPage from "./FlipPage";
-
-const pages = [
-  [page1, page2],
-  [page3, page4],
-  [page5, page6],
-  [page7, page8],
-  [page9, page10],
-];
-
-
 
 function FlipBook() {
   const [currentSheet, setCurrentSheet] = useState(0);
@@ -64,7 +45,7 @@ function FlipBook() {
     }
 
     setIsClosing(true);
-    setCurrentSheet(pages.length - 1);
+    setCurrentSheet(sheets.length - 1);
     setTimeout(() => {
       setCurrentSheet(0);
       setIsClosing(false);
@@ -153,7 +134,7 @@ function FlipBook() {
         />
       </div>
 
-      {pages.map(([front, back], index) => {
+      {sheets.map(([front, back], index) => {
         const pageNumber = index + 1;
 
         return (
@@ -192,7 +173,7 @@ function FlipBook() {
 
       {isBookOpen && currentSheet > 1 && (
         <div className="mt-4 text-sm text-base-content/70">
-          {currentPage}/{pages.length}
+          {currentPage}/{sheets.length}
         </div>
       )}
     </div>

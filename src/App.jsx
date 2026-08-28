@@ -1,7 +1,7 @@
 import { useState } from "react";
 import FlipBook from "./components/FlipBook";
+import MobileBook from "./components/MobileBook";
 import ThemeToggle from "./components/ThemeToggle";
-import ResponsiveWarning from "./components/ResponsiveWarning";
 import Footer from "./components/Footer";
 
 function App() {
@@ -11,10 +11,16 @@ function App() {
     <main className="min-h-dvh bg-base-200 text-base-content flex flex-col items-center justify-center">
       <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} />
 
-      <FlipBook />
+      <div className="hidden md:block">
+        <FlipBook />
+      </div>
+
+      <div className="block w-full md:hidden">
+        <MobileBook />
+      </div>
+
       <Footer />
 
-      <ResponsiveWarning />
     </main>
   );
 }
