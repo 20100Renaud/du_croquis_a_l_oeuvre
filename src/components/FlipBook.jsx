@@ -112,10 +112,9 @@ function FlipBook() {
           }`}
         >
           <div className="flex w-4/5 rotate-y-180 flex-col items-center text-center">
-            <h1 className="text-3xl font-bold">Companie</h1>
+            <h1 className="text-3xl font-bold">Nom de l'artiste</h1>
 
-            <p className="text-sm opacity-80">Last Name</p>
-            <p className="text-sm opacity-80">First Name</p>
+            <p className="text-sm opacity-80">Intitulé</p>
 
             <p className="mt-4 text-sm">
               Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum,

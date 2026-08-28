@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 import { pages } from "../data/pages";
+import { LayoutGrid, House } from "lucide-react";
+import MobilePageContent from "./MobilePageContent";
+
 
 export default function MobileBook() {
   const [currentPage, setCurrentPage] = useState(0);
@@ -134,7 +137,7 @@ export default function MobileBook() {
 
   return (
     <div className="flex w-full flex-col items-center px-4">
-      {/* Pages viewport */}
+      {/* MOBILE BOOK */}
       <div
         ref={containerRef}
         className="relative aspect-[288/400] w-full max-w-md overflow-hidden rounded-lg"
@@ -155,88 +158,159 @@ export default function MobileBook() {
                 : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
-          {/* Previous */}
+          {/* Previous page */}
           <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
             {previousPage !== null && (
-              <img
-                src={pages[previousPage]}
-                alt={`Book page ${previousPage + 1}`}
-                draggable="false"
-                className="h-full w-full select-none object-contain"
-                style={{
-                  transform: `scale(${getScale(-1)})`,
-                  opacity: getOpacity(-1),
-                  transition: "none",
-                }}
+              <MobilePageContent
+                page={pages[previousPage]}
+                index={previousPage}
               />
             )}
           </div>
 
-          {/* Current */}
+          {/* Current page */}
           <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
-            <img
-              src={pages[currentPage]}
-              alt={`Book page ${currentPage + 1}`}
-              draggable="false"
-              className="h-full w-full select-none object-contain"
-              style={{
-                transform: `scale(${getScale(0)})`,
-                opacity: getOpacity(0),
-                transition: "none",
-              }}
-            />
+            <MobilePageContent page={pages[currentPage]} index={currentPage} />
           </div>
 
-          {/* Next */}
+          {/* Next page */}
           <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
             {nextPage !== null && (
-              <img
-                src={pages[nextPage]}
-                alt={`Book page ${nextPage + 1}`}
-                draggable="false"
-                className="h-full w-full select-none object-contain"
-                style={{
-                  transform: `scale(${getScale(1)})`,
-                  opacity: getOpacity(1),
-                  transition: "none",
-                }}
-              />
+              <MobilePageContent page={pages[nextPage]} index={nextPage} />
             )}
           </div>
         </div>
       </div>
 
-      {/* Mobile navigation */}
+      {/* NAVIGATION */}
       <div className="relative mt-4 flex w-full max-w-md items-center justify-between">
-        {/* Previous */}
+        {/* thumbnails btn */}
         <button
           type="button"
           className="btn btn-circle btn-ghost"
-          onClick={goToPreviousPage}
+          onClick={() =>
+            document.getElementById("mobile-pages-modal").showModal()
+          }
+          aria-label="Show all pages"
+        >
+          <LayoutGrid size={20} />
+        </button>
+
+        {/* Home btn */}
+        <button
+          type="button"
+          className="btn btn-circle btn-ghost"
+          onClick={() => setCurrentPage(0)}
           disabled={isFirstPage || isAnimating}
-          aria-label="Previous page"
+          aria-label="Go to first page"
         >
-          <span className="text-2xl">‹</span>
+          <House size={20} />
         </button>
 
-        {/* Counter / Hint */}
-        <span className="absolute left-1/2 -translate-x-1/2 text-sm text-base-content/70">
-          {currentPage === 0
-            ? "Swipe to turn"
-            : `${currentPage + 1}/${pages.length}`}
-        </span>
+        <div className="flex-1 flex items-center justify-between">
+          {/* Previous arrow */}
+          <button
+            type="button"
+            className="btn btn-circle btn-ghost"
+            onClick={goToPreviousPage}
+            disabled={isFirstPage || isAnimating}
+            aria-label="Previous page"
+          >
+            <span className="text-2xl">‹</span>
+          </button>
 
-        {/* Next */}
-        <button
-          type="button"
-          className="btn btn-circle btn-ghost"
-          onClick={goToNextPage}
-          disabled={isLastPage || isAnimating}
-          aria-label="Next page"
-        >
-          <span className="text-2xl">›</span>
-        </button>
+          {/* Counter / Swipe text */}
+          <span className="absolute left-1/2 -translate-x-1/2 text-sm text-base-content/70">
+            {currentPage === 0
+              ? "Swipe to turn"
+              : `${currentPage + 1}/${pages.length}`}
+          </span>
+
+          {/* Next arrow */}
+          <button
+            type="button"
+            className="btn btn-circle btn-ghost"
+            onClick={goToNextPage}
+            disabled={isLastPage || isAnimating}
+            aria-label="Next page"
+          >
+            <span className="text-2xl">›</span>
+          </button>
+        </div>
       </div>
+
+      {/* THUMBAILS MODAL*/}
+      <dialog id="mobile-pages-modal" className="modal">
+        <div className="modal-box max-w-lg">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Gallerie</h2>
+
+            <form method="dialog">
+              <button
+                className="btn btn-sm btn-circle btn-ghost"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </form>
+          </div>
+
+          <div className="grid grid-cols-3 gap-3">
+            {pages.map((page, index) => (
+              <button
+                key={index}
+                type="button"
+                className="flex w-full flex-col items-center overflow-hidden rounded"
+                onClick={() => {
+                  setCurrentPage(index);
+                  document.getElementById("mobile-pages-modal").close();
+                }}
+              >
+                <div className="aspect-[288/400] w-full overflow-hidden rounded-t">
+                  {page.type === "text" ? (
+                    <div className="flex h-full w-full flex-col items-center justify-center overflow-hidden p-2 text-center">
+                      <img
+                        src={page.image}
+                        alt={`${page.artist.name} logo`}
+                        className="mb-2 w-10 shrink-0 object-contain"
+                      />
+
+                      <h1 className="truncate text-sm font-bold">
+                        {page.artist.name}
+                      </h1>
+
+                      <p className="truncate text-[10px] text-base-content/60">
+                        {page.artist.subtitle}
+                      </p>
+
+                      <p className="mt-2 line-clamp-4 text-[9px] leading-tight text-base-content/70">
+                        {page.artist.description}
+                      </p>
+                    </div>
+                  ) : (
+                    <img
+                      src={page.src}
+                      alt={`Page ${index + 1}`}
+                      className="h-full w-full select-none object-contain"
+                      draggable="false"
+                    />
+                  )}
+                </div>
+
+                <span
+                  className={`mt-1 rounded-full border-2 px-1 text-xs transition ${
+                    currentPage === index
+                      ? "border-blue-600"
+                      : "border-transparent"
+                  }`}
+                >
+                  {index + 1}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </dialog>
     </div>
   );
 }
