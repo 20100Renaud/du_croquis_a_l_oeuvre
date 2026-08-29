@@ -121,12 +121,28 @@ export default function MobileBook({ darkMode }) {
     completeSwipe("previous");
   }
 
+  const MIN_SCALE = 0.4;
+
+  function getPageScale(offset, width, isIncoming = false) {
+    if (!width) return 1;
+
+    const progress = Math.min(Math.abs(offset) / width, 1);
+
+    if (isIncoming) {
+      return MIN_SCALE + progress * (1 - MIN_SCALE);
+    }
+
+    return 1 - progress * (1 - MIN_SCALE);
+  }
+
+
+
   return (
     <div className="flex w-full flex-col items-center px-4">
       {/* MOBILE BOOK */}
       <div
         ref={containerRef}
-        className="relative aspect-[288/400] w-full max-w-md overflow-hidden rounded-lg"
+        className="relative aspect-[288/400] w-full max-w-md overflow-hidden"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -145,7 +161,19 @@ export default function MobileBook({ darkMode }) {
           }}
         >
           {/* Previous page */}
-          <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
+          <div
+            className="flex h-full w-1/3 shrink-0 items-center justify-center"
+            style={{
+              transform:
+                dragOffset > 0
+                  ? `scale(${getPageScale(dragOffset, getWidth(), true)})`
+                  : "scale(0.92)",
+              transition:
+                isDragging || disableTransition
+                  ? "none"
+                  : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          >
             {previousPage !== null && (
               <MobilePageContent
                 page={pages[previousPage]}
@@ -156,7 +184,19 @@ export default function MobileBook({ darkMode }) {
           </div>
 
           {/* Current page */}
-          <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
+          <div
+            className="flex h-full w-1/3 shrink-0 items-center justify-center"
+            style={{
+              transform:
+                dragOffset === 0
+                  ? "scale(1)"
+                  : `scale(${getPageScale(dragOffset, getWidth())})`,
+              transition:
+                isDragging || disableTransition
+                  ? "none"
+                  : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          >
             <MobilePageContent
               page={pages[currentPage]}
               index={currentPage}
@@ -165,7 +205,19 @@ export default function MobileBook({ darkMode }) {
           </div>
 
           {/* Next page */}
-          <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
+          <div
+            className="flex h-full w-1/3 shrink-0 items-center justify-center"
+            style={{
+              transform:
+                dragOffset < 0
+                  ? `scale(${getPageScale(dragOffset, getWidth(), true)})`
+                  : "scale(0.92)",
+              transition:
+                isDragging || disableTransition
+                  ? "none"
+                  : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          >
             {nextPage !== null && (
               <MobilePageContent
                 page={pages[nextPage]}
@@ -267,7 +319,9 @@ export default function MobileBook({ darkMode }) {
                   {page.type === "text" ? (
                     <div className="flex h-full w-full flex-col items-center justify-center overflow-hidden p-2 text-center">
                       <img
-                        src={darkMode ? bookInfo.image.dark : page.image.light}
+                        src={
+                          darkMode ? bookInfo.image.dark : bookInfo.image.light
+                        }
                         alt={`${bookInfo.name} logo`}
                         className="mb-2 w-10 shrink-0 object-contain"
                       />
