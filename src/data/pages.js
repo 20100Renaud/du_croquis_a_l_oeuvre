@@ -8,64 +8,34 @@ import page7 from "../assets/images/pages/page7.webp";
 import page8 from "../assets/images/pages/page8.webp";
 import page9 from "../assets/images/pages/page9.webp";
 import page10 from "../assets/images/pages/page10.webp";
-import coverImage from "../assets/images/Logo_Blanc.png";
+import Logo_Blanc from "../assets/images/Logo_Blanc.png";
+import Logo_Noir from "../assets/images/Logo_Noir.png";
+
+export const bookInfo = {
+  name: "My name",
+  subtitle: "Description",
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  image: {
+    dark: Logo_Blanc,
+    light: Logo_Noir,
+  },
+};
 
 export const pages = [
   {
     type: "text",
-    image: coverImage,
-    artist: {
-      name: "Nom de l'artiste",
-      subtitle: "Intitulé",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    },
   },
-
-  {
-    type: "image",
-    src: page2,
-  },
-
-  {
-    type: "image",
-    src: page3,
-  },
-
-  {
-    type: "image",
-    src: page4,
-  },
-
-  {
-    type: "image",
-    src: page5,
-  },
-  {
-    type: "image",
-    src: page6,
-  },
-  {
-    type: "image",
-    src: page7,
-  },
-
-  {
-    type: "image",
-    src: page8,
-  },
-
-  {
-    type: "image",
-    src: page9,
-  },
-
-  {
-    type: "image",
-    src: page10,
-  },
+  { type: "image", src: page2 },
+  { type: "image", src: page3 },
+  { type: "image", src: page4 },
+  { type: "image", src: page5 },
+  { type: "image", src: page6 },
+  { type: "image", src: page7 },
+  { type: "image", src: page8 },
+  { type: "image", src: page9 },
+  { type: "image", src: page10 },
 ];
-
 
 export const sheets = [
   [page1, page2],

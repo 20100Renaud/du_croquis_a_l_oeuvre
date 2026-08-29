@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 import flipBookEdgeShading from "../assets/images/flip_book_edge_shading.webp";
 import frontPageEdgeShading from "../assets/images/front_page_edge_shading.webp";
 import backPageEdgeShading from "../assets/images/back_page_edge_shading.webp";
-import coverImage from "../assets/images/Logo_Blanc.png";
 
-import { sheets } from "../data/pages";
+import { bookInfo, sheets } from "../data/pages";
 
 import FlipPage from "./FlipPage";
 
@@ -94,14 +93,14 @@ function FlipBook() {
           }`}
         >
           <img
-            src={coverImage}
-            alt="Flip Book cover"
+            src={bookInfo.image.dark}
+            alt={`${bookInfo.name} cover`}
             className="w-4/5 object-contain p-10"
           />
 
           <div className="flex flex-col items-center">
-            <h1 className="text-3xl font-bold">Flip Book</h1>
-            <p className="text-sm opacity-80">My name</p>
+            <h1 className="text-3xl font-bold">{bookInfo.name}</h1>
+            <p className="text-sm opacity-80">{bookInfo.subtitle}</p>
           </div>
         </div>
 
@@ -112,16 +111,11 @@ function FlipBook() {
           }`}
         >
           <div className="flex w-4/5 rotate-y-180 flex-col items-center text-center">
-            <h1 className="text-3xl font-bold">Nom de l'artiste</h1>
+            <h1 className="text-3xl font-bold">{bookInfo.name}</h1>
 
-            <p className="text-sm opacity-80">Intitulé</p>
+            <p className="text-sm opacity-80">{bookInfo.subtitle}</p>
 
-            <p className="mt-4 text-sm">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsum,
-              dolorum dolore. Placeat, sunt dolorum veniam iusto vel in voluptas
-              molestias aliquid exercitationem qui ut, sit reprehenderit sed ex
-              fuga voluptatum.
-            </p>
+            <p className="mt-4 text-sm">{bookInfo.description}</p>
           </div>
         </div>
 
@@ -158,10 +152,11 @@ function FlipBook() {
         }}
       >
         <img
-          src={coverImage}
-          alt="Flip Book cover"
+          src={bookInfo.image.dark}
+          alt={`${bookInfo.name} cover`}
           className="w-4/5 object-contain p-10"
         />
+
         <button
           type="button"
           className="absolute inset-0 cursor-pointer"

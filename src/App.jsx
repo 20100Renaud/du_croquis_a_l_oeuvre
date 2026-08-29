@@ -16,7 +16,7 @@ export default function App() {
       </div>
 
       <div className="block w-full md:hidden">
-        <MobileBook />
+        <MobileBook darkMode={darkMode} />
       </div>
 
       <Footer />

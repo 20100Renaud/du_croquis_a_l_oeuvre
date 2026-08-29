@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import { pages } from "../data/pages";
+import { bookInfo, pages } from "../data/pages";
 import { LayoutGrid, House } from "lucide-react";
 import MobilePageContent from "./MobilePageContent";
 
 
-export default function MobileBook() {
+export default function MobileBook({ darkMode }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -49,16 +49,19 @@ export default function MobileBook() {
     setDragOffset(offset);
   }
 
-  function handleTouchEnd() {
+  function handleTouchEnd(event) {
     if (touchStartX.current === null || isAnimating) {
       return;
     }
 
-    const swipeThreshold = 80;
+    const touchEndX = event.changedTouches[0].clientX;
+    const swipeDistance = touchEndX - touchStartX.current;
 
-    const shouldGoNext = dragOffset < -swipeThreshold && !isLastPage;
+    const swipeThreshold = 50;
 
-    const shouldGoPrevious = dragOffset > swipeThreshold && !isFirstPage;
+    const shouldGoNext = swipeDistance < -swipeThreshold && !isLastPage;
+
+    const shouldGoPrevious = swipeDistance > swipeThreshold && !isFirstPage;
 
     if (shouldGoNext) {
       completeSwipe("next");
@@ -71,6 +74,7 @@ export default function MobileBook() {
     touchStartX.current = null;
     setIsDragging(false);
   }
+
 
   function completeSwipe(direction) {
     const width = getWidth();
@@ -117,24 +121,6 @@ export default function MobileBook() {
     completeSwipe("previous");
   }
 
-  function getScale(index) {
-    const width = getWidth();
-    const position = index * width + dragOffset;
-
-    const progress = Math.min(Math.abs(position) / width, 1);
-
-    return 1 - progress * 0.15;
-  }
-
-  function getOpacity(index) {
-    const width = getWidth();
-    const position = index * width + dragOffset;
-
-    const progress = Math.min(Math.abs(position) / width, 1);
-
-    return 1 - progress * 0.25;
-  }
-
   return (
     <div className="flex w-full flex-col items-center px-4">
       {/* MOBILE BOOK */}
@@ -164,19 +150,28 @@ export default function MobileBook() {
               <MobilePageContent
                 page={pages[previousPage]}
                 index={previousPage}
+                darkMode={darkMode}
               />
             )}
           </div>
 
           {/* Current page */}
           <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
-            <MobilePageContent page={pages[currentPage]} index={currentPage} />
+            <MobilePageContent
+              page={pages[currentPage]}
+              index={currentPage}
+              darkMode={darkMode}
+            />
           </div>
 
           {/* Next page */}
           <div className="flex h-full w-1/3 shrink-0 items-center justify-center">
             {nextPage !== null && (
-              <MobilePageContent page={pages[nextPage]} index={nextPage} />
+              <MobilePageContent
+                page={pages[nextPage]}
+                index={nextPage}
+                darkMode={darkMode}
+              />
             )}
           </div>
         </div>
@@ -184,28 +179,30 @@ export default function MobileBook() {
 
       {/* NAVIGATION */}
       <div className="relative mt-4 flex w-full max-w-md items-center justify-between">
-        {/* thumbnails btn */}
-        <button
-          type="button"
-          className="btn btn-circle btn-ghost"
-          onClick={() =>
-            document.getElementById("mobile-pages-modal").showModal()
-          }
-          aria-label="Show all pages"
-        >
-          <LayoutGrid size={20} />
-        </button>
-
-        {/* Home btn */}
-        <button
-          type="button"
-          className="btn btn-circle btn-ghost"
-          onClick={() => setCurrentPage(0)}
-          disabled={isFirstPage || isAnimating}
-          aria-label="Go to first page"
-        >
-          <House size={20} />
-        </button>
+        {/* Buttons */}
+        <div className="">
+          {/* thumbnails btn */}
+          <button
+            type="button"
+            className="btn btn-circle btn-ghost"
+            onClick={() =>
+              document.getElementById("mobile-pages-modal").showModal()
+            }
+            aria-label="Show all pages"
+          >
+            <LayoutGrid size={20} />
+          </button>
+          {/* Home btn */}
+          <button
+            type="button"
+            className="btn btn-circle btn-ghost"
+            onClick={() => setCurrentPage(0)}
+            disabled={isFirstPage}
+            aria-label="Go to first page"
+          >
+            <House size={20} />
+          </button>
+        </div>
 
         <div className="flex-1 flex items-center justify-between">
           {/* Previous arrow */}
@@ -213,14 +210,14 @@ export default function MobileBook() {
             type="button"
             className="btn btn-circle btn-ghost"
             onClick={goToPreviousPage}
-            disabled={isFirstPage || isAnimating}
+            disabled={isFirstPage}
             aria-label="Previous page"
           >
             <span className="text-2xl">‹</span>
           </button>
 
           {/* Counter / Swipe text */}
-          <span className="absolute left-1/2 -translate-x-1/2 text-sm text-base-content/70">
+          <span className="text-sm text-base-content/70">
             {currentPage === 0
               ? "Swipe to turn"
               : `${currentPage + 1}/${pages.length}`}
@@ -231,7 +228,7 @@ export default function MobileBook() {
             type="button"
             className="btn btn-circle btn-ghost"
             onClick={goToNextPage}
-            disabled={isLastPage || isAnimating}
+            disabled={isLastPage}
             aria-label="Next page"
           >
             <span className="text-2xl">›</span>
@@ -241,7 +238,7 @@ export default function MobileBook() {
 
       {/* THUMBAILS MODAL*/}
       <dialog id="mobile-pages-modal" className="modal">
-        <div className="modal-box max-w-lg">
+        <div className="modal-box  w-full max-w-none scrollbar-none">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Gallerie</h2>
 
@@ -260,7 +257,7 @@ export default function MobileBook() {
               <button
                 key={index}
                 type="button"
-                className="flex w-full flex-col items-center overflow-hidden rounded"
+                className="flex w-full flex-col items-center overflow-hidden rounded border"
                 onClick={() => {
                   setCurrentPage(index);
                   document.getElementById("mobile-pages-modal").close();
@@ -270,21 +267,21 @@ export default function MobileBook() {
                   {page.type === "text" ? (
                     <div className="flex h-full w-full flex-col items-center justify-center overflow-hidden p-2 text-center">
                       <img
-                        src={page.image}
-                        alt={`${page.artist.name} logo`}
+                        src={darkMode ? bookInfo.image.dark : page.image.light}
+                        alt={`${bookInfo.name} logo`}
                         className="mb-2 w-10 shrink-0 object-contain"
                       />
 
                       <h1 className="truncate text-sm font-bold">
-                        {page.artist.name}
+                        {bookInfo.name}
                       </h1>
 
                       <p className="truncate text-[10px] text-base-content/60">
-                        {page.artist.subtitle}
+                        {bookInfo.subtitle}
                       </p>
 
                       <p className="mt-2 line-clamp-4 text-[9px] leading-tight text-base-content/70">
-                        {page.artist.description}
+                        {bookInfo.description}
                       </p>
                     </div>
                   ) : (
