@@ -1,6 +1,6 @@
 import { bookInfo } from "../data/pages";
 
-export default function MobilePageContent({ page, index, darkMode }) {
+export default function MobilePage({ page, index, darkMode }) {
   if (page.type === "text") {
     return (
       <div className="flex h-full w-full flex-col items-center justify-between p-8 text-center">
@@ -27,11 +27,23 @@ export default function MobilePageContent({ page, index, darkMode }) {
   }
 
   return (
-    <img
-      src={page.src}
-      alt={`Page ${index + 1}`}
-      className="h-full w-full select-none object-cover object-center rounded-lg border-2 bg-white"
-      draggable="false"
-    />
+    <div className="relative h-full w-full overflow-hidden rounded-lg border-2 bg-white">
+      <img
+        src={page.src}
+        alt={`Page ${index + 1}`}
+        className="h-full w-full select-none object-cover object-center"
+        draggable="false"
+      />
+
+      {/* Creation name */}
+      <p
+        className="absolute bottom-4 right-4 bg-white/60 px-4 text-sm italic text-gray-500"
+        style={{
+          clipPath: "polygon(10% 0, 100% 0, 90% 100%, 0 100%)",
+        }}
+      >
+        {page.name}
+      </p>
+    </div>
   );
 }

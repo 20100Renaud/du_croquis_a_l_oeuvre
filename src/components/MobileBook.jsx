@@ -175,7 +175,7 @@ export default function MobileBook({ darkMode }) {
             }}
           >
             {previousPage !== null && (
-              <MobilePageContent
+              <MobilePage
                 page={pages[previousPage]}
                 index={previousPage}
                 darkMode={darkMode}
@@ -271,7 +271,7 @@ export default function MobileBook({ darkMode }) {
           {/* Counter / Swipe text */}
           <span className="text-sm text-base-content/70">
             {currentPage === 0
-              ? "Swipe to turn"
+              ? "Glisser le doigt sur l'écran"
               : `${currentPage + 1}/${pages.length}`}
           </span>
 
@@ -348,15 +348,23 @@ export default function MobileBook({ darkMode }) {
                   )}
                 </div>
 
-                <span
-                  className={`mt-1 rounded-full border-2 px-1 text-xs transition ${
-                    currentPage === index
-                      ? "border-blue-600"
-                      : "border-transparent"
-                  }`}
-                >
-                  {index + 1}
-                </span>
+                <div className="mt-1 flex items-center gap-1">
+                  <span
+                    className={`rounded-full border-2 px-1 text-xs transition ${
+                      currentPage === index
+                        ? "border-blue-600"
+                        : "border-transparent"
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+
+                  {page.type === "image" && (
+                    <span className="truncate text-xs text-base-content/60">
+                      {page.name}
+                    </span>
+                  )}
+                </div>
               </button>
             ))}
           </div>

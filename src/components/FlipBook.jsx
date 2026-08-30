@@ -4,7 +4,7 @@ import coverShade from "../assets/images/coverShade.webp";
 import frontShade from "../assets/images/frontShade.webp";
 import backShade from "../assets/images/backShade.webp";
 
-import { bookInfo, sheets } from "../data/pages";
+import { bookInfo, sheets, totalPages } from "../data/pages";
 
 import FlipPage from "./FlipPage";
 
@@ -21,12 +21,28 @@ export default function FlipBook() {
   const [isCoverClosing, setIsCoverClosing] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-
   const coverTimerRef = useRef(null);
   const backCoverTimerRef = useRef(null);
 
   const isBookOpen = currentSheet > 0;
-  const currentPage = currentSheet;
+
+  const leftPage = currentSheet > 1 ? currentSheet * 2 - 2 : null;
+  const rightPage =
+    currentSheet === 1
+      ? 1
+      : currentSheet > 1 && currentSheet <= sheets.length
+        ? currentSheet * 2 - 1
+        : null;
+
+  const lastSheet = sheets[sheets.length - 1];
+  const hasEndPage = lastSheet?.some((page) => page.type === "end");
+
+  const showPageCounter =
+    isBookOpen &&
+    !isClosing &&
+    currentSheet >= 1 &&
+    (currentSheet <= sheets.length ||
+      (!hasEndPage && currentSheet === sheets.length + 1));
 
   // Close all the pages
   useEffect(() => {
@@ -290,11 +306,25 @@ export default function FlipBook() {
       </div>
 
       {/* PAGE COUNTER */}
-      {isBookOpen && (
-        <div className="absolute top-full left-0 mt-4 text-sm text-base-content/70">
-          {currentPage}/{sheets.length + 1}
-        </div>
-      )}
+      <div
+        className={`absolute top-full right-0 mt-4 flex w-[596px] justify-between px-4 text-sm text-base-content/70 ${
+          showPageCounter ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {/* LEFT */}
+        <span>
+          {leftPage && leftPage <= totalPages
+            ? `${leftPage}/${totalPages}`
+            : ""}
+        </span>
+
+        {/* RIGHT */}
+        <span>
+          {rightPage && rightPage <= totalPages
+            ? `${rightPage}/${totalPages}`
+            : ""}
+        </span>
+      </div>
     </div>
   );
 }
