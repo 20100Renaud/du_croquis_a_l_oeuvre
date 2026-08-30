@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { bookInfo, pages } from "../data/pages";
 import { LayoutGrid, House } from "lucide-react";
-import MobilePageContent from "./MobilePageContent";
+import MobilePage from "./MobilePage";
 
 
 export default function MobileBook({ darkMode }) {
@@ -197,7 +197,7 @@ export default function MobileBook({ darkMode }) {
                   : "transform 300ms cubic-bezier(0.22, 1, 0.36, 1)",
             }}
           >
-            <MobilePageContent
+            <MobilePage
               page={pages[currentPage]}
               index={currentPage}
               darkMode={darkMode}
@@ -219,7 +219,7 @@ export default function MobileBook({ darkMode }) {
             }}
           >
             {nextPage !== null && (
-              <MobilePageContent
+              <MobilePage
                 page={pages[nextPage]}
                 index={nextPage}
                 darkMode={darkMode}
@@ -290,7 +290,7 @@ export default function MobileBook({ darkMode }) {
 
       {/* THUMBAILS MODAL*/}
       <dialog id="mobile-pages-modal" className="modal">
-        <div className="modal-box  w-full max-w-none scrollbar-none">
+        <div className="modal-box w-full max-w-none h-full max-h-none scrollbar-none">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-lg font-semibold">Gallerie</h2>
 
@@ -342,7 +342,7 @@ export default function MobileBook({ darkMode }) {
                     <img
                       src={page.src}
                       alt={`Page ${index + 1}`}
-                      className="h-full w-full select-none object-contain"
+                      className="h-full w-full select-none object-cover object-center"
                       draggable="false"
                     />
                   )}

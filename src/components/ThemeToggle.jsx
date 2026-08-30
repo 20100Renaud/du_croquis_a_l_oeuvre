@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { MoonStar, Sun } from "lucide-react";
 
-function ThemeToggle({ darkMode, setDarkMode }) {
+export default function ThemeToggle({ darkMode, setDarkMode }) {
   useEffect(() => {
     document.documentElement.setAttribute(
       "data-theme",
@@ -33,5 +33,3 @@ function ThemeToggle({ darkMode, setDarkMode }) {
     </div>
   );
 }
-
-export default ThemeToggle;

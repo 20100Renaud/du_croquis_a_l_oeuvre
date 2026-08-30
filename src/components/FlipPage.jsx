@@ -1,12 +1,12 @@
-function FlipPage({
+export default function FlipPage({
   pageNumber,
   front,
   back,
   isFlipped,
   zIndex,
   onClick,
-  frontPageEdgeShading,
-  backPageEdgeShading,
+  frontShade,
+  backShade,
 }) {
   return (
     <div
@@ -21,7 +21,7 @@ function FlipPage({
           aria-label={`Turn page ${pageNumber}`}
         />
 
-        <img className="edge-shading" src={frontPageEdgeShading} alt="" />
+        <img className="edge-shading" src={frontShade} alt="" />
 
         <img
           className="front-content"
@@ -38,7 +38,7 @@ function FlipPage({
           aria-label={`Turn back page ${pageNumber}`}
         />
 
-        <img className="edge-shading" src={backPageEdgeShading} alt="" />
+        <img className="edge-shading" src={backShade} alt="" />
 
         <img
           className="back-content"
@@ -49,5 +49,3 @@ function FlipPage({
     </div>
   );
 }
-
-export default FlipPage;
