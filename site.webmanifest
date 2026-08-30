@@ -1,6 +1,7 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Du croquis à l'œuvre",
+  "short_name": "FlipBook",
+  "start_url": "/",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
