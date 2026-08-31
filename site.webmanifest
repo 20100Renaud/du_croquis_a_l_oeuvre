@@ -1,16 +1,17 @@
 {
   "name": "Du croquis à l'œuvre",
-  "short_name": "FlipBook",
-  "start_url": "/",
+  "short_name": "Du croquis à l'œuvre",
+  "start_url": "/du_croquis_a_l_oeuvre/",
+  "scope": "/du_croquis_a_l_oeuvre/",
   "icons": [
     {
-      "src": "/web-app-manifest-192x192.png",
+      "src": "/du_croquis_a_l_oeuvre/web-app-manifest-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/web-app-manifest-512x512.png",
+      "src": "/du_croquis_a_l_oeuvre/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
